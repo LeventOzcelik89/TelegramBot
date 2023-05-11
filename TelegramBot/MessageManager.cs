@@ -14,5 +14,6 @@ namespace TelegramBot
         public static TL.Chat YellowChannel = null;
         public static TL.Chat BlueChannel = null;
         public static TL.Channel TrendChannel = null;
+        public static TL.Channel PinkChannel = null;
     }
 }

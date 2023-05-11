@@ -5,6 +5,9 @@ using TL;
 using WTelegram;
 
 
+var confg = System.IO.File.ReadAllText("Configuration.json");
+var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBot.Settings.Configuration>(confg);
+
 static string Config(string what)
 {
     switch (what)
@@ -55,6 +58,7 @@ ChannelManager.GreenChannel = dials.chats.Where(a => a.Value.Title == "GREEN CHA
 ChannelManager.YellowChannel = dials.chats.Where(a => a.Value.Title == "YELLOW CHANNEL").FirstOrDefault().Value as Chat;
 ChannelManager.BlueChannel = dials.chats.Where(a => a.Value.Title == "BLUE CHANNEL").FirstOrDefault().Value as Chat;
 ChannelManager.TrendChannel = dials.chats.Where(a => a.Value.Title == "TRENDINGS").FirstOrDefault().Value as Channel;
+ChannelManager.PinkChannel = dials.chats.Where(a => a.Value.Title == "PINK CHANNEL").FirstOrDefault().Value as Channel;
 
 client.OnUpdate += Client_UpDate;
 
@@ -80,50 +84,54 @@ async Task Client_UpDate(IObject arg)
             return;
         }
 
-        var mm = (items.UpdateList.FirstOrDefault() as UpdateNewChannelMessage).message;
+        var mm = (items.UpdateList.FirstOrDefault() as UpdateNewChannelMessage).message.ToString();
 
         var rgx = new Regex("Token: (.*)");
-        var tknMatch = rgx.Matches(mm.ToString());
+        var tknMatch = rgx.Matches(mm);
         if (tknMatch.Count == 0)
         {
             return;
         }
 
-        var tkn = tknMatch.FirstOrDefault().Value.Replace("Token: ", "");
 
-        if (mm.ToString().IndexOf("Chain: ETH") > -1)
+        if (mm.IndexOf("Chain: ETH") > -1)
         {
             return;
         }
 
-        if (mm.ToString().IndexOf("BSC TRENDING") > -1)
+        if (mm.IndexOf("ETH Trend") > -1)
         {
-            await client.SendMessageAsync(ChannelManager.TrendChannel, tkn);
             return;
         }
 
-        var rs = DexAnalyzer.Check(tkn);
-
-        if (rs != null && rs.warnings != null)
+        if (settings.Pink.Check(mm))
         {
+            await client.SendMessageAsync(ChannelManager.TrendChannel, settings.Pink.Address);
+        }
 
-            if (rs.warnings.red > 0)
-            {
-                await client.SendMessageAsync(ChannelManager.RedChannel, tkn);
-            }
-            else if (rs.warnings.yellow > 0)
-            {
-                await client.SendMessageAsync(ChannelManager.YellowChannel, tkn);
-            }
-            else if (rs.warnings.orange > 0)
-            {
-                await client.SendMessageAsync(ChannelManager.YellowChannel, tkn);
-            }
-            else
-            {
-                await client.SendMessageAsync(dials.chats[934711061], tkn);
-            }
+        if (settings.Blue.Check(mm))
+        {
+            await client.SendMessageAsync(ChannelManager.BlueChannel, settings.Blue.Address);
+        }
 
+        if (settings.Red.Check(mm))
+        {
+            await client.SendMessageAsync(ChannelManager.RedChannel, settings.Red.Address);
+        }
+
+        if (settings.Trends.Check(mm))
+        {
+            await client.SendMessageAsync(ChannelManager.TrendChannel, settings.Trends.Address);
+        }
+
+        if (settings.Yellow.Check(mm))
+        {
+            await client.SendMessageAsync(ChannelManager.YellowChannel, settings.Yellow.Address);
+        }
+
+        if (settings.Green.Check(mm))
+        {
+            await client.SendMessageAsync(ChannelManager.GreenChannel, settings.Green.Address);
         }
 
     }
