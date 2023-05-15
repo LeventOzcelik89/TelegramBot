@@ -9,8 +9,8 @@
   "Green": {
     "unverified": null,
     "liquidDollar": {
-      "min": 0,
-      "max": 300
+      "min": 300,
+      "max": null
     }
   },
   "Pink": {

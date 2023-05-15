@@ -35,7 +35,7 @@ namespace TelegramBot
         private string dir { get; set; }
         public string rawLog { get; private set; }
         public string fileName { get; private set; }
-        public LogRow[] content { get; set; }
+        public List<LogRow> content { get; set; }
 
         public LogManagerBase(string filename)
         {
@@ -47,7 +47,7 @@ namespace TelegramBot
                 File.WriteAllText(this.dir, Newtonsoft.Json.JsonConvert.SerializeObject(new LogRow("0x00000")) + Environment.NewLine);
             }
             this.rawLog = File.ReadAllText(filename);
-            content = rawLog.Split(System.Environment.NewLine).Where(a => !String.IsNullOrEmpty(a)).ToArray().Select(a => Newtonsoft.Json.JsonConvert.DeserializeObject<LogRow>(a)).ToArray();
+            content = rawLog.Split(System.Environment.NewLine).Where(a => !String.IsNullOrEmpty(a)).ToArray().Select(a => Newtonsoft.Json.JsonConvert.DeserializeObject<LogRow>(a)).ToList();
         }
 
         public void AppendLine(string token)
@@ -56,6 +56,7 @@ namespace TelegramBot
             {
                 var newLine = Newtonsoft.Json.JsonConvert.SerializeObject(new LogRow(token));
                 File.AppendAllText(this.dir, newLine + Environment.NewLine);
+                this.content.Add(new LogRow(DateTime.Now, token));
             }
             catch (Exception ex)
             {

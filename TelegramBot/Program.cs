@@ -62,9 +62,9 @@ var ch_Yellow = new GreenChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YEL
 var ch_Blue = new GreenChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 var ch_Pink = new GreenChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 
-//  var adr = "0x45bbf8fb772ebfcbbc4e3f53e7b9788b0fcbe7b1";
+//  var adr = "0x347d43c5e30bc0b9040a1b6e16e2b00d36f78591";
 //  var dexResult = new DexAnalyzer().Check(adr);
-//  ch_Red.Check(adr, dexResult);
+//  ch_Green.Check(adr, dexResult);
 
 client.OnUpdate += Client_UpDate;
 

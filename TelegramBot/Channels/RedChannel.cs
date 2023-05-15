@@ -32,7 +32,7 @@ namespace TelegramBot.Channels
 
             if (
                 result.warnings.red > 0 &&
-                result._checkResult.liquid >= config.liquidDollar.min &&
+                (config.liquidDollar.min == null || result._checkResult.liquid >= config.liquidDollar.min) &&
                 (config.unverified == null || result._checkResult.Unverified == config.unverified))
             {
                 await client.SendMessageAsync(this.TGChannel, address);
