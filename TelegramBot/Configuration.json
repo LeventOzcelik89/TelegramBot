@@ -1,92 +1,49 @@
 {
-  "Green": {
-    "logName" :  "GreenLog",
-    "text": null,
-    "unverified": null,
-    "likit_min": 300,
-    "likit_max": null,
-    "mcap_max": 30000,
-    "block_duplicate": true,
-    "warnings_max": {
-      "red": 0,
-      "orange": 0,
-      "yellow": 0
-    }
-  },
-
-  "Yellow": {
-    "logName": "YellowLog",
-    "text": null,
-    "unverified": null,
-    "likit_min": 300,
-    "likit_max": null,
-    "mcap_max": 30000,
-    "block_duplicate": true,
-    "warnings_max": {
-      "red": 0,
-      "orange": null,
-      "yellow": null
-    }
-  },
-
-  "Red": {
-    "logName": "RedLog",
-    "text": null,
-    "unverified": false,
-    "likit_min": 600,
-    "likit_max": null,
-    "mcap_max": null,
-    "block_duplicate": true,
-    "warnings_max": {
-      "red": null,
-      "orange": null,
-      "yellow": null
-    }
-  },
-
   "Blue": {
-    "logName": "BlueLog",
-    "text": null,
     "unverified": null,
-    "likit_min": 1,
-    "likit_max": 299,
-    "mcap_max": 10000,
-    "block_duplicate": true,
-    "warnings_max": {
-      "red": 0,
-      "orange": null,
-      "yellow": null
+    "liquidDollar": {
+      "min": 1,
+      "max": 290
     }
   },
-
+  "Green": {
+    "unverified": null,
+    "liquidDollar": {
+      "min": 0,
+      "max": 300
+    }
+  },
   "Pink": {
-    "logName": "PinkLog",
-    "text": null,
-    "unverified": true,
-    "likit_min": 0,
-    "likit_max": 0,
-    "mcap_max": 0,
-    "block_duplicate": true,
-    "warnings_max": {
-      "red": null,
-      "orange": null,
-      "yellow": null
+    "unverified": null,
+    "liquidDollar": {
+      "min": 0,
+      "max": 300
+    },
+    "mcapDollar": {
+      "min": null,
+      "max": 1
     }
   },
-
-  "Trends": {
-    "logName": "TrendLog",
-    "text": "BSC TRENDING",
+  "Red": {
+    "unverified": false,
+    "liquidDollar": {
+      "min": 600,
+      "max": null
+    },
+    "mcapDollar": {
+      "min": null,
+      "max": null
+    }
+  },
+  "Yellow": {
     "unverified": null,
-    "likit_min": null,
-    "likit_max": null,
-    "mcap_max": null,
-    "block_duplicate": true,
-    "warnings_max": {
-      "red": null,
-      "orange": null,
-      "yellow": null
+    "liquidDollar": {
+      "min": 300,
+      "max": null
+    },
+    "mcapDollar": {
+      "min": null,
+      "max": null
     }
   }
-
 }

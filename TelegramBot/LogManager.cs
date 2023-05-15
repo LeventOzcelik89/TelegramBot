@@ -12,7 +12,7 @@ namespace TelegramBot
     {
         public LogRow()
         {
-            
+
         }
         public LogRow(string token)
         {
@@ -30,14 +30,14 @@ namespace TelegramBot
         public string token { get; set; }
     }
 
-    public class LogManager
+    public abstract class LogManagerBase
     {
         private string dir { get; set; }
         public string rawLog { get; private set; }
         public string fileName { get; private set; }
         public LogRow[] content { get; set; }
 
-        public LogManager(string filename)
+        public LogManagerBase(string filename)
         {
             this.fileName = filename;
             if (this.fileName == null) { return; }
@@ -63,6 +63,28 @@ namespace TelegramBot
             }
         }
 
+    }
+
+    public class LogManager : LogManagerBase
+    {
+
+        public LogManager(string fileName) : base(fileName)
+        {
+        }
+
+
 
     }
+
+    public class CheckList : LogManagerBase
+    {
+
+        public CheckList(string fileName) : base(fileName)
+        {
+        }
+
+
+
+    }
+
 }

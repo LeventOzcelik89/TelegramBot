@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using TelegramBot;
+using TelegramBot.Channels;
 using TL;
 using WTelegram;
 
-
+ChatBase GetChannel(Messages_Dialogs dials, string channelName)
+{
+    return dials.chats.Where(a => a.Value.Title == channelName && a.Value.IsActive).FirstOrDefault().Value as ChatBase;
+}
 
 var confg = System.IO.File.ReadAllText("Configuration.json");
 var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBot.Settings.Configuration>(confg);
@@ -51,12 +56,15 @@ await client.LoginUserIfNeeded();
 
 var dials = await client.Messages_GetAllDialogs();
 
-var ch_Red = new RedChannel(client, "Ch_Red.txt", dials.chats.Where(a => a.Value.Title == "RED-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
-var ch_Green = new GreenChannel(client, "Ch_Green.txt", dials.chats.Where(a => a.Value.Title == "GREEN-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
-var ch_Yellow = new YellowChannel(client, "Ch_Yellow.txt", dials.chats.Where(a => a.Value.Title == "YELLOW-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
-var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", dials.chats.Where(a => a.Value.Title == "BLUE-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
-var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", dials.chats.Where(a => a.Value.Title == "PINK-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
+var ch_Red = new RedChannel(client, "Ch_Red.txt", GetChannel(dials, "RED-CHANNEL"), settings.Red);
+var ch_Green = new GreenChannel(client, "Ch_Green.txt", GetChannel(dials, "GREEN-CHANNEL"), settings.Green);
+var ch_Yellow = new GreenChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YELLOW-CHANNEL"), settings.Yellow);
+var ch_Blue = new GreenChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
+var ch_Pink = new GreenChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 
+//  var adr = "0x45bbf8fb772ebfcbbc4e3f53e7b9788b0fcbe7b1";
+//  var dexResult = new DexAnalyzer().Check(adr);
+//  ch_Red.Check(adr, dexResult);
 
 client.OnUpdate += Client_UpDate;
 
