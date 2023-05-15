@@ -68,7 +68,7 @@ namespace TelegramBot.Settings
 
             if (this.unverified != null)
             {
-                dexAnalyz = dexAnalyz ?? DexAnalyzer.Check(address);
+                dexAnalyz = dexAnalyz ?? new DexAnalyzer().Check(address);
 
                 if
                     (dexAnalyz != null && this.unverified == true && dexAnalyz.options.Contains("UNVERIFIED CONTACT") ||
@@ -90,7 +90,7 @@ namespace TelegramBot.Settings
             if (this.likit_min != null)
             {
 
-                dexAnalyz = dexAnalyz ?? DexAnalyzer.Check(address);
+                dexAnalyz = dexAnalyz ?? new DexAnalyzer().Check(address);
 
                 if (dexAnalyz != null && this.likit_min < dexAnalyz.liquid)
                 {
@@ -106,7 +106,7 @@ namespace TelegramBot.Settings
             if (this.likit_max != null)
             {
 
-                dexAnalyz = dexAnalyz ?? DexAnalyzer.Check(address);
+                dexAnalyz = dexAnalyz ?? new DexAnalyzer().Check(address);
 
                 if (dexAnalyz != null && this.likit_max > dexAnalyz.liquid)
                 {
@@ -122,7 +122,7 @@ namespace TelegramBot.Settings
             if (this.mcap_max != null)
             {
 
-                dexAnalyz = dexAnalyz ?? DexAnalyzer.Check(address);
+                dexAnalyz = dexAnalyz ?? new DexAnalyzer().Check(address);
 
                 if (dexAnalyz != null && dexAnalyz.marketcap != "NaN" && this.mcap_max >= Convert.ToInt32(dexAnalyz.marketcap))
                 {
@@ -138,15 +138,15 @@ namespace TelegramBot.Settings
             if (this.warnings_max != null)
             {
 
-                dexAnalyz = dexAnalyz ?? DexAnalyzer.Check(address);
+                dexAnalyz = dexAnalyz ?? new DexAnalyzer().Check(address);
 
                 if (this.warnings_max.red != null)
                 {
-                    if (dexAnalyz != null && this.warnings_max.red >= dexAnalyz.warnings.red)
+                    if (dexAnalyz != null && this.warnings_max.red >= dexAnalyz.warnings.red && dexAnalyz.warnings.red > 0)
                     {
                         res = false;
                     }
-                    else if (dexAnalyz != null && this.warnings_max.red < dexAnalyz.warnings.red)
+                    else if (dexAnalyz != null && this.warnings_max.red < dexAnalyz.warnings.red && dexAnalyz.warnings.red > 0)
                     {
                         //res = true;
                     }
@@ -154,11 +154,11 @@ namespace TelegramBot.Settings
 
                 if (this.warnings_max.orange != null)
                 {
-                    if (dexAnalyz != null && this.warnings_max.orange >= dexAnalyz.warnings.orange)
+                    if (dexAnalyz != null && this.warnings_max.orange >= dexAnalyz.warnings.orange && dexAnalyz.warnings.orange > 0)
                     {
                         res = false;
                     }
-                    else if (dexAnalyz != null && this.warnings_max.orange < dexAnalyz.warnings.orange)
+                    else if (dexAnalyz != null && this.warnings_max.orange < dexAnalyz.warnings.orange && dexAnalyz.warnings.orange > 0)
                     {
                         //res = true;
                     }
@@ -166,11 +166,11 @@ namespace TelegramBot.Settings
 
                 if (this.warnings_max.yellow != null)
                 {
-                    if (dexAnalyz != null && this.warnings_max.yellow >= dexAnalyz.warnings.yellow)
+                    if (dexAnalyz != null && this.warnings_max.yellow >= dexAnalyz.warnings.yellow && dexAnalyz.warnings.yellow > 0)
                     {
                         res = false;
                     }
-                    else if (dexAnalyz != null && this.warnings_max.yellow < dexAnalyz.warnings.yellow)
+                    else if (dexAnalyz != null && this.warnings_max.yellow < dexAnalyz.warnings.yellow && dexAnalyz.warnings.yellow > 0)
                     {
                         //res = true;
                     }

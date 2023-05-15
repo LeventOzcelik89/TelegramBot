@@ -4,22 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TL.Methods;
 
 namespace TelegramBot
 {
 
-    public static class DexAnalyzer
+    public class DexAnalyzer
     {
+
+        static double? BNBUSD { get; set; }
 
         static HttpClient cli = new HttpClient();
 
-        public static DexAnalyzerResult Check(string token)
+        public DexAnalyzerResult Check(string token)
         {
 
             try
             {
 
-                var rs = cli.GetAsync($"https://api.dexanalyzer.io/rug/bsc/{token}?apikey=a3c28e4485ca47a8b8d33c73059");
+                var rs = cli.GetAsync($"https://api.dexanalyzer.io/full/bsc/{token}?apikey=a3c28e4485ca47a8b8d33c73059");
 
                 var rsr = rs.Result.Content.ReadAsStringAsync().Result.ToString();
 
@@ -27,6 +30,17 @@ namespace TelegramBot
                 rsr = rsr.Substring(1, rsr.Length - 2);
 
                 var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DexAnalyzerResult>(rsr);
+
+                var _liq = Convert.ToDouble(json.liquidparite.Replace("WBNB", "").Trim());
+                var _mcap = Convert.ToInt32(json.marketcap);
+                var _unv = json.options.Contains("UNVERIFIED CONTACT");
+
+                json._checkResult = new CheckResult
+                {
+                    liquid = _liq * DexAnalyzer.BNBUSD,
+                    mcap = _mcap,
+                    Unverified = _unv
+                };
 
                 return json;
 
@@ -38,12 +52,43 @@ namespace TelegramBot
 
         }
 
+        public void InitBNBUSD()
+        {
 
+            var rs = cli.GetAsync("https://api.binance.com/api/v3/ticker/price?symbol=BNBUSDT");
+            var rsr = rs.Result.Content.ReadAsStringAsync().Result.ToString();
+            var json = Newtonsoft.Json.JsonConvert.DeserializeObject<BinancePrice>(rsr);
+
+            BNBUSD = json.USD;
+
+            Console.WriteLine("BNB TO USD : " + json.USD);
+
+        }
+
+    }
+
+    public class BinancePrice
+    {
+        public string symbol { get; set; }
+        public string price { get; set; }
+        public double USD { get { return Convert.ToDouble(this.price); } }
+    }
+
+
+    public class CheckResult
+    {
+
+        public double? liquid { get; set; }
+        public int? mcap { get; set; }
+        public bool? Unverified { get; set; }
 
     }
 
     public class DexAnalyzerResult
     {
+
+        public CheckResult _checkResult { get; set; }
+
         public int network { get; set; }
 
         [JsonProperty("token-name")]

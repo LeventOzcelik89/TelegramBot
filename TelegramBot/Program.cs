@@ -5,8 +5,12 @@ using TL;
 using WTelegram;
 
 
+
 var confg = System.IO.File.ReadAllText("Configuration.json");
 var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBot.Settings.Configuration>(confg);
+var log = new LogManager("Errors.txt");
+
+new DexAnalyzer().InitBNBUSD();
 
 static string Config(string what)
 {
@@ -42,26 +46,19 @@ static string ConfigLB(string what)
 
 }
 
-//  static Messages_Dialogs? dials = null;
-
-//  using var client = new Client(ConfigLB);
 using var client = new Client(Config);
 await client.LoginUserIfNeeded();
 
 var dials = await client.Messages_GetAllDialogs();
-// var chts = await clientLevent.Messages_GetAllChats();
 
-//  MessageManager.RedChannel = dials.messages[0];
+var ch_Red = new RedChannel(client, "Ch_Red.txt", dials.chats.Where(a => a.Value.Title == "RED-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
+var ch_Green = new GreenChannel(client, "Ch_Green.txt", dials.chats.Where(a => a.Value.Title == "GREEN-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
+var ch_Yellow = new YellowChannel(client, "Ch_Yellow.txt", dials.chats.Where(a => a.Value.Title == "YELLOW-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
+var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", dials.chats.Where(a => a.Value.Title == "BLUE-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
+var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", dials.chats.Where(a => a.Value.Title == "PINK-CHANNEL" && a.Value.IsActive).FirstOrDefault().Value as ChatBase);
 
-ChannelManager.RedChannel = dials.chats.Where(a => a.Value.Title == "RED CHANNEL").FirstOrDefault().Value as Channel;
-ChannelManager.GreenChannel = dials.chats.Where(a => a.Value.Title == "GREEN CHANNEL").FirstOrDefault().Value as Chat;
-ChannelManager.YellowChannel = dials.chats.Where(a => a.Value.Title == "YELLOW CHANNEL").FirstOrDefault().Value as Chat;
-ChannelManager.BlueChannel = dials.chats.Where(a => a.Value.Title == "BLUE CHANNEL").FirstOrDefault().Value as Chat;
-ChannelManager.TrendChannel = dials.chats.Where(a => a.Value.Title == "TRENDINGS").FirstOrDefault().Value as Channel;
-ChannelManager.PinkChannel = dials.chats.Where(a => a.Value.Title == "PINK CHANNEL").FirstOrDefault().Value as Channel;
 
 client.OnUpdate += Client_UpDate;
-
 
 async Task Client_UpDate(IObject arg)
 {
@@ -99,123 +96,29 @@ async Task Client_UpDate(IObject arg)
             return;
         }
 
-        if (mm.IndexOf("ETH Trend") > -1)
+        if (mm.IndexOf("ETH TREND") > -1)
         {
             return;
         }
 
-        if (settings.Pink.Check(mm))
-        {
-            await client.SendMessageAsync(ChannelManager.TrendChannel, settings.Pink.Address);
-        }
+        var address = tknMatch.FirstOrDefault().Value.Replace("Token: ", "");
+        var dexResult = new DexAnalyzer().Check(address);
 
-        if (settings.Blue.Check(mm))
-        {
-            await client.SendMessageAsync(ChannelManager.BlueChannel, settings.Blue.Address);
-        }
-
-        if (settings.Red.Check(mm))
-        {
-            await client.SendMessageAsync(ChannelManager.RedChannel, settings.Red.Address);
-        }
-
-        if (settings.Trends.Check(mm))
-        {
-            await client.SendMessageAsync(ChannelManager.TrendChannel, settings.Trends.Address);
-        }
-
-        if (settings.Yellow.Check(mm))
-        {
-            await client.SendMessageAsync(ChannelManager.YellowChannel, settings.Yellow.Address);
-        }
-
-        if (settings.Green.Check(mm))
-        {
-            await client.SendMessageAsync(ChannelManager.GreenChannel, settings.Green.Address);
-        }
+        ch_Red.Check(address, dexResult);
+        ch_Green.Check(address, dexResult);
+        ch_Pink.Check(address, dexResult);
+        ch_Blue.Check(address, dexResult);
+        ch_Yellow.Check(address, dexResult);
 
     }
     catch (Exception ex)
     {
+        log.AppendLine(ex.Message.ToString() + System.Environment.NewLine + ex.StackTrace);
         Console.WriteLine(ex.Message);
         throw;
     }
 
-
 }
-
-
-
-
-
-//using var client = new WTelegram.Client(Config);
-//await client.LoginUserIfNeeded();
-
-//using var clientKO = new WTelegram.Client(ConfigKO);
-//await clientKO.LoginUserIfNeeded();
-
-//using var clientLevent = new WTelegram.Client(ConfigLevent);
-//await clientLevent.LoginUserIfNeeded();
-
-////  var chts = await client.Messages_GetAllChats();
-////  var chts = await clientKO.Messages_GetAllChats();
-////  var chts = await clientLevent.Messages_GetAllChats();
-
-//client.OnUpdate += Client_OnUpdate;
-
-//async Task Client_OnUpdate(IObject arg)
-//{
-//    var _message = "";
-//    try
-//    {
-//        if (!arg.GetType().IsAssignableFrom(typeof(TL.Updates)))
-//        {
-//            return;
-//        }
-
-//        var items = arg as TL.Updates;
-//        //  var item = items.chats.Where(a => a.Key == 1626065448).FirstOrDefault();
-//        //  var item = items.chats.Where(a => a.Key == 1585811560).FirstOrDefault();
-//        var item = items.chats.Where(a => a.Key == 1744775839).FirstOrDefault();
-
-//        if (item.Key == 0)
-//        {
-//            return;
-//        }
-
-//        var mes = (items.UpdateList.FirstOrDefault() as UpdateNewChannelMessage as TL.UpdateNewChannelMessage).message;
-//        var message = ((TL.Message)(items.UpdateList.FirstOrDefault() as UpdateNewChannelMessage as TL.UpdateNewChannelMessage).message);
-//        //  if (message.message.Contains("BINANCE:"))
-//        //  {
-//        var result = await client.Contacts_ResolveUsername("MaestroSniperBot");
-//        var resultKO = await clientKO.Contacts_ResolveUsername("MaestroSniperBot");
-
-//        var r = new System.Text.RegularExpressions.Regex("0x[0-9abcdefABCDEF]{40}");
-//        _message = client.EntitiesToHtml(message.message.ToString(), message.entities);
-//        var rs = r.Matches(_message);
-
-//        var msg = "BINANCE: " + rs[rs.Count - 1].ToString();
-
-//        await clientKO.SendMessageAsync(resultKO.User, msg);
-//        await client.SendMessageAsync(result.User, msg);
-//        //  await client.SendMessageAsync()
-//        //  }
-
-//    }
-//    catch (Exception ex)
-//    {
-//        Console.WriteLine(ex.Message);
-//        Console.WriteLine(ex.StackTrace);
-//        Console.WriteLine();
-//        Console.WriteLine();
-//        Console.WriteLine();
-//        Console.WriteLine(_message);
-//        Console.WriteLine();
-//        Console.WriteLine();
-//        Console.WriteLine();
-//    }
-
-//}
 
 do
 {
