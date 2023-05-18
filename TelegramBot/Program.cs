@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using TelegramBot;
@@ -58,13 +59,15 @@ var dials = await client.Messages_GetAllDialogs();
 
 var ch_Red = new RedChannel(client, "Ch_Red.txt", GetChannel(dials, "RED-CHANNEL"), settings.Red);
 var ch_Green = new GreenChannel(client, "Ch_Green.txt", GetChannel(dials, "GREEN-CHANNEL"), settings.Green);
-var ch_Yellow = new GreenChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YELLOW-CHANNEL"), settings.Yellow);
-var ch_Blue = new GreenChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
-var ch_Pink = new GreenChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
+var ch_Yellow = new YellowChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YELLOW-CHANNEL"), settings.Yellow);
+var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
+var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 
-//  var adr = "0x347d43c5e30bc0b9040a1b6e16e2b00d36f78591";
+//  var adr = "0x93b2bc0d9d054395260dd825f2daf7e77e6ddb78";
 //  var dexResult = new DexAnalyzer().Check(adr);
-//  ch_Green.Check(adr, dexResult);
+//  ch_Red.Check(adr, dexResult);
+//  ch_Pink.Check(adr, dexResult);
+
 
 client.OnUpdate += Client_UpDate;
 
@@ -111,6 +114,12 @@ async Task Client_UpDate(IObject arg)
 
         var address = tknMatch.FirstOrDefault().Value.Replace("Token: ", "");
         var dexResult = new DexAnalyzer().Check(address);
+
+        if (dexResult == null)
+        {
+            log.AppendLine(address + System.Environment.NewLine + $"https://api.dexanalyzer.io/full/bsc/{address}?apikey=a3c28e4485ca47a8b8d33c73059");
+            return;
+        }
 
         ch_Red.Check(address, dexResult);
         ch_Green.Check(address, dexResult);

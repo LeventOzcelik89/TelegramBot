@@ -42,7 +42,7 @@ namespace TelegramBot
             this.fileName = filename;
             if (this.fileName == null) { return; }
             this.dir = Path.Combine(Environment.CurrentDirectory, this.fileName);
-            if (!Directory.Exists(this.dir))
+            if (!File.Exists(this.dir))
             {
                 File.WriteAllText(this.dir, Newtonsoft.Json.JsonConvert.SerializeObject(new LogRow("0x00000")) + Environment.NewLine);
             }

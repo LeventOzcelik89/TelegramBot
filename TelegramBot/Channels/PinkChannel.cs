@@ -28,8 +28,8 @@ namespace TelegramBot.Channels
             }
 
             if (
-                result._checkResult.Unverified == true &&
-                result.warnings.red == 0 &&
+                (config.unverified == null || result._checkResult.Unverified == config.unverified) &&
+                ((config.unverified == false || config.unverified == null) && result.warnings.red == 0) &&
                 (config.liquidDollar.max == null || result._checkResult.liquid <= config.liquidDollar.max) &&
                 (config.mcapDollar.max == null || result._checkResult.mcap <= config.mcapDollar.max))
             {
