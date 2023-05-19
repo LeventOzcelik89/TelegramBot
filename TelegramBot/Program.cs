@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using TelegramBot;
 using TelegramBot.Channels;
 using TL;
 using WTelegram;
+
+Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
 ChatBase GetChannel(Messages_Dialogs dials, string channelName)
 {
