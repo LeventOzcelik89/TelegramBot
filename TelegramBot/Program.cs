@@ -66,6 +66,7 @@ var ch_Green = new GreenChannel(client, "Ch_Green.txt", GetChannel(dials, "GREEN
 var ch_Yellow = new YellowChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YELLOW-CHANNEL"), settings.Yellow);
 var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
+var ch_Black = new BlackChannel(client, "Ch_Black.txt", GetChannel(dials, "BLACK-CHANNEL"), new TelegramBot.Settings.Config { });
 
 //  var adr = "0x93b2bc0d9d054395260dd825f2daf7e77e6ddb78";
 //  var dexResult = new DexAnalyzer().Check(adr);
@@ -130,6 +131,7 @@ async Task Client_UpDate(IObject arg)
         ch_Pink.Check(address, dexResult);
         ch_Blue.Check(address, dexResult);
         ch_Yellow.Check(address, dexResult);
+        ch_Black.Check(address, dexResult);
 
     }
     catch (Exception ex)
