@@ -54,9 +54,9 @@ namespace TelegramBot
         {
             try
             {
+                this.content.Add(new LogRow(DateTime.Now, token));
                 var newLine = Newtonsoft.Json.JsonConvert.SerializeObject(new LogRow(token));
                 File.AppendAllText(this.dir, newLine + Environment.NewLine);
-                this.content.Add(new LogRow(DateTime.Now, token));
             }
             catch (Exception ex)
             {
