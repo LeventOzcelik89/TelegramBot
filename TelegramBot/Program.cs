@@ -68,10 +68,9 @@ var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHA
 var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 var ch_Black = new BlackChannel(client, "Ch_Black.txt", GetChannel(dials, "BLACK-CHANNEL"), new TelegramBot.Settings.Config { });
 
-//  var adr = "0x93b2bc0d9d054395260dd825f2daf7e77e6ddb78";
-//  var dexResult = new DexAnalyzer().Check(adr);
-//  ch_Red.Check(adr, dexResult);
-//  ch_Pink.Check(adr, dexResult);
+var adr = "0x7f050c0d6ac43e2f3935Bc5f0c7C56922538B91a";
+var dexResult = new DexAnalyzer().Check(adr);
+ch_Black.Check(adr, dexResult);
 
 
 client.OnUpdate += Client_UpDate;

@@ -32,7 +32,7 @@ namespace TelegramBot
                 var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DexAnalyzerResult>(rsr);
 
                 var _liq = Convert.ToDouble(json.liquidparite.Replace("WBNB", "").Trim());
-                var _mcap = Convert.ToInt32(json.marketcap);
+                var _mcap = Int32.TryParse(json.marketcap, out _) ? Convert.ToInt32(json.marketcap) : 0;
                 var _unv = json.options.Contains("UNVERIFIED CONTACT");
 
                 json._checkResult = new CheckResult

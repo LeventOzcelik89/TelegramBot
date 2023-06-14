@@ -31,7 +31,8 @@ namespace TelegramBot.Channels
                 result.warnings.red == 0 &&
                 result.warnings.yellow == 0 &&
                 result.warnings.orange == 0 &&
-                (config.liquidDollar.min == null || result._checkResult.liquid >= config.liquidDollar.min)
+                (config.liquidDollar.min == null || result._checkResult.liquid >= config.liquidDollar.min) &&
+                (config.liquidDollar.max == null || result._checkResult.liquid <= config.liquidDollar.max)
                 )
             {
 
