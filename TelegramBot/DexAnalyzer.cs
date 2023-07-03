@@ -102,7 +102,7 @@ namespace TelegramBot
         public string pairaddress { get; set; }
         public string owner { get; set; }
         public string decimals { get; set; }
-        public int? dead { get; set; }
+        public double? dead { get; set; }
 
         [JsonProperty("chain-website")]
         public string chainwebsite { get; set; }
