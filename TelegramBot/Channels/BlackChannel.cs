@@ -30,7 +30,8 @@ namespace TelegramBot.Channels
             if (
                 result._checkResult.Unverified == true &&
                 result._checkResult.liquid <= 1 &&
-                result._checkResult.mcap <= 1)
+                result._checkResult.mcap == -999
+                )       //  NaN
             {
 
                 await client.SendMessageAsync(this.TGChannel, address);

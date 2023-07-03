@@ -34,6 +34,7 @@ static string Config(string what)
         case "first_name": return "Volkan";      // if sign-up is required
         case "last_name": return "Okan";        // if sign-up is required
         case "password": return "------";     // if user has enabled 2FA
+        case "MaxAutoReconnects": return "9999";
         default: return null;                  // let WTelegramClient decide the default config
     }
 }
@@ -68,9 +69,9 @@ var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHA
 var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 var ch_Black = new BlackChannel(client, "Ch_Black.txt", GetChannel(dials, "BLACK-CHANNEL"), new TelegramBot.Settings.Config { });
 
-var adr = "0x7f050c0d6ac43e2f3935Bc5f0c7C56922538B91a";
+var adr = "0x7137AA21aa027d49F698dA69Bd42f483F33E626D";
 var dexResult = new DexAnalyzer().Check(adr);
-ch_Black.Check(adr, dexResult);
+ch_Yellow.Check(adr, dexResult);
 
 
 client.OnUpdate += Client_UpDate;

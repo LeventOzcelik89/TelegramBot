@@ -31,8 +31,8 @@ namespace TelegramBot
 
                 var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DexAnalyzerResult>(rsr);
 
-                var _liq = Convert.ToDouble(json.liquidparite.Replace("WBNB", "").Trim());
-                var _mcap = Int32.TryParse(json.marketcap, out _) ? Convert.ToInt32(json.marketcap) : 0;
+                var _liq = Convert.ToDouble(json.liquidparite.Replace("WBNB", "").Replace("BNB", "").Trim());
+                var _mcap = Int32.TryParse(json.marketcap, out _) ? Convert.ToInt32(json.marketcap) : -999;
                 var _unv = json.options.Contains("UNVERIFIED CONTACT");
 
                 json._checkResult = new CheckResult
@@ -89,7 +89,8 @@ namespace TelegramBot
 
         public CheckResult _checkResult { get; set; }
 
-        public int network { get; set; }
+
+        public int? network { get; set; }
 
         [JsonProperty("token-name")]
         public string tokenname { get; set; }
@@ -101,10 +102,11 @@ namespace TelegramBot
         public string pairaddress { get; set; }
         public string owner { get; set; }
         public string decimals { get; set; }
+        public int? dead { get; set; }
 
         [JsonProperty("chain-website")]
         public string chainwebsite { get; set; }
-        public int liquid { get; set; }
+        public int? liquid { get; set; }
         public string marketcap { get; set; }
 
         [JsonProperty("liquid-parite")]
@@ -117,12 +119,20 @@ namespace TelegramBot
         public string telegram { get; set; }
         public string audit { get; set; }
         public string website { get; set; }
+        public string twitter { get; set; }
+        public string discord { get; set; }
+        public string age { get; set; }
         public string options { get; set; }
         public Warnings warnings { get; set; }
         public string hp { get; set; }
         public string dexlink { get; set; }
         public string dexname { get; set; }
-        public long date { get; set; }
+        public long? date { get; set; }
+
+
+
+
+
     }
 
     public class Warnings

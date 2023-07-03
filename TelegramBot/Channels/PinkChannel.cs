@@ -28,12 +28,14 @@ namespace TelegramBot.Channels
             }
 
             if (
-                
-                ((config.unverified == null || result._checkResult.Unverified == config.unverified) || ((config.unverified == false || config.unverified == null) && result.warnings.red == 0)) &&
+                result.warnings.red == 0 &&
+                ((config.unverified == null || result._checkResult.Unverified == config.unverified) || ((config.unverified == false || config.unverified == null))) &&
                 (config.liquidDollar.max == null || result._checkResult.liquid <= config.liquidDollar.max) &&
                 (config.liquidDollar.min == null || result._checkResult.liquid >= config.liquidDollar.min) &&
-                (config.mcapDollar.max == null || result._checkResult.mcap <= config.mcapDollar.max) &&
-                (config.mcapDollar.min == null || result._checkResult.mcap >= config.mcapDollar.min))
+                //(config.mcapDollar.max == null || result._checkResult.mcap <= config.mcapDollar.max) &&
+                //(config.mcapDollar.min == null || result._checkResult.mcap >= config.mcapDollar.min)
+                result._checkResult.mcap == -999     //  NaN
+                )
             {
 
                 await client.SendMessageAsync(this.TGChannel, address);
