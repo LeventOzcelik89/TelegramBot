@@ -4,11 +4,26 @@
     "liquidDollar": {
       "min": 1,
       "max": 290
+    },
+	"mcapDollar": {
+      "min": null,
+      "max": 1
     }
   },
   "Green": {
     "unverified": null,
     "liquidDollar": {
+      "min": 250,
+      "max": null
+    }
+  },
+  "Gray": {
+    "unverified": true,
+    "liquidDollar": {
+      "min": 300,
+      "max": null
+    },
+	"mcapDollar": {
       "min": 300,
       "max": null
     }
@@ -27,7 +42,7 @@
   "Red": {
     "unverified": false,
     "liquidDollar": {
-      "min": 600,
+      "min": 400,
       "max": null
     },
     "mcapDollar": {
@@ -38,7 +53,7 @@
   "Yellow": {
     "unverified": null,
     "liquidDollar": {
-      "min": 300,
+      "min": 250,
       "max": null
     },
     "mcapDollar": {
