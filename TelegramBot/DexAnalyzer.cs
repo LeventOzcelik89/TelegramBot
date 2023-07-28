@@ -129,7 +129,8 @@ namespace TelegramBot
         public string dexname { get; set; }
         public long? date { get; set; }
 
-
+        public string initialmcap { get; set; }
+        public string initiallp { get; set; }
 
 
 
