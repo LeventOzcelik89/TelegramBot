@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TL.Methods;
 
@@ -39,7 +40,8 @@ namespace TelegramBot
                 {
                     liquid = _liq * DexAnalyzer.BNBUSD,
                     mcap = _mcap,
-                    Unverified = _unv
+                    Unverified = _unv,
+                    age = CalculateTimeSpan(json.age)
                 };
 
                 return json;
@@ -49,6 +51,39 @@ namespace TelegramBot
             {
                 return null;
             }
+
+        }
+
+        private int CalculateTimeSpan(string age)
+        {
+
+            var ts = 0;
+            //  29d 7h 20m 21s
+            var rDay = new Regex("[0-9]+d");
+            if (rDay.Match(age).Success)
+            {
+                ts += Convert.ToInt32(rDay.Match(age).Value.ToString().Replace("d", "")) * 60 * 60 * 24;
+            }
+
+            var rHour = new Regex("[0-9]+h");
+            if (rHour.Match(age).Success)
+            {
+                ts += Convert.ToInt32(rHour.Match(age).Value.ToString().Replace("h", "")) * 60 * 60;
+            }
+
+            var rMinute = new Regex("[0-9]+m");
+            if (rMinute.Match(age).Success)
+            {
+                ts += Convert.ToInt32(rMinute.Match(age).Value.ToString().Replace("m", "")) * 60;
+            }
+
+            var rSec = new Regex("[0-9]+s");
+            if (rSec.Match(age).Success)
+            {
+                ts += Convert.ToInt32(rSec.Match(age).Value.ToString().Replace("s", ""));
+            }
+
+            return ts;
 
         }
 
@@ -81,6 +116,7 @@ namespace TelegramBot
         public double? liquid { get; set; }
         public int? mcap { get; set; }
         public bool? Unverified { get; set; }
+        public int age { get; set; }
 
     }
 

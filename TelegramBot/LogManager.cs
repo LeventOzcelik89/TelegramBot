@@ -73,8 +73,6 @@ namespace TelegramBot
         {
         }
 
-
-
     }
 
     public class CheckList : LogManagerBase
@@ -85,6 +83,15 @@ namespace TelegramBot
         }
 
 
+
+    }
+
+    public class PinkBlackChannel : LogManagerBase
+    {
+
+        public PinkBlackChannel(string fileName) : base(fileName)
+        {
+        }
 
     }
 

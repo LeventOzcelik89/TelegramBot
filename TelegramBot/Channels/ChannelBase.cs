@@ -14,7 +14,7 @@ namespace TelegramBot.Channels
 
         public ChatBase TGChannel { get; set; }
         public LogManager LogManager { get; set; }
-        public CheckList CheckList { get; set; }
+        public CheckList CheckList { get; set; } 
         public string logFile { get; }
         public Client client { get; set; }
         public TelegramBot.Settings.Config config { get; set; }

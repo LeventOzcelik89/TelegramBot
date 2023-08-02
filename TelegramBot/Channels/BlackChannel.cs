@@ -10,7 +10,13 @@ namespace TelegramBot.Channels
 {
     public class BlackChannel : ChannelBase
     {
-        public BlackChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config) { }
+
+        public PinkBlackChannel PinkBlackLog { get; set; }
+
+        public BlackChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config)
+        {
+            this.PinkBlackLog = new PinkBlackChannel("DB_PinkBlack.txt");
+        }
 
         public override async void Check(string address, DexAnalyzerResult result)
         {
@@ -22,17 +28,19 @@ namespace TelegramBot.Channels
                 Console.WriteLine("Aynı Token Geldi : " + address);
                 return;
             }
-            else
-            {
-                this.LogManager.AppendLine(address);
-            }
+
+            this.LogManager.AppendLine(address);
 
             if (
                 result._checkResult.Unverified == true &&
                 result._checkResult.liquid <= 1 &&
-                result._checkResult.mcap == -999
+                result._checkResult.mcap == -999 &&
+
+                (config.ageSeconds == null || result._checkResult.age >= config.ageSeconds)
                 )       //  NaN
             {
+
+                PinkBlackLog.AppendLine(address);
 
                 await client.SendMessageAsync(this.TGChannel, address);
 
