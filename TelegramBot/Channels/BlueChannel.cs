@@ -10,7 +10,12 @@ namespace TelegramBot.Channels
 {
     public class BlueChannel : ChannelBase
     {
-        public BlueChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config) { }
+        public PinkBlackChannel BlueLog { get; set; }
+
+        public BlueChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config)
+        {
+            this.BlueLog = new PinkBlackChannel("DB_PinkBlack.txt");
+        }
 
         public override async void Check(string address, DexAnalyzerResult result)
         {
@@ -41,6 +46,8 @@ namespace TelegramBot.Channels
                 result.warnings.orange == 0)
 
             {
+
+                BlueLog.AppendLine(address);
 
                 await client.SendMessageAsync(this.TGChannel, address);
 

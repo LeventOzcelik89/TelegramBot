@@ -22,6 +22,7 @@ namespace TelegramBot.Settings
         public Config Pink { get; set; }
         public Config Red { get; set; }
         public Config Yellow { get; set; }
+        public Config Black { get; set; }
     }
 
     public class Config
@@ -29,6 +30,7 @@ namespace TelegramBot.Settings
         public bool? unverified { get; set; }
         public MinMax liquidDollar { get; set; }
         public MinMax mcapDollar { get; set; }
+        public int? ageSeconds { get; set; }
     }
 
 
