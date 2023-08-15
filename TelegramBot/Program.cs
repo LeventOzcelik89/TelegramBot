@@ -65,13 +65,16 @@ var dials = await client.Messages_GetAllDialogs();
 var ch_Red = new RedChannel(client, "Ch_Red.txt", GetChannel(dials, "RED-CHANNEL"), settings.Red);
 var ch_Green = new GreenChannel(client, "Ch_Green.txt", GetChannel(dials, "GREEN-CHANNEL"), settings.Green);
 var ch_Yellow = new YellowChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YELLOW-CHANNEL"), settings.Yellow);
-var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
+//  VIP BSC LIQUDITY
+//  var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 var ch_Black = new BlackChannel(client, "Ch_Black.txt", GetChannel(dials, "BLACK-CHANNEL"), settings.Black);
 
-var adr = "0x1ef6e1773c5aaad37642ba1658e9218571c518cb";
-var dexResult = new DexAnalyzer().Check(adr);
-ch_Pink.Check(adr, dexResult);
+var ch_liquid = new LiquidChannel(client, "VIP BSC LIQUDITY", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
+
+//var adr = "0x1ef6e1773c5aaad37642ba1658e9218571c518cb";
+//var dexResult = new DexAnalyzer().Check(adr);
+//ch_Pink.Check(adr, dexResult);
 
 
 client.OnUpdate += Client_UpDate;
@@ -129,9 +132,10 @@ async Task Client_UpDate(IObject arg)
         ch_Red.Check(address, dexResult);
         ch_Green.Check(address, dexResult);
         ch_Pink.Check(address, dexResult);
-        ch_Blue.Check(address, dexResult);
+        //  ch_Blue.Check(address, dexResult);
         ch_Yellow.Check(address, dexResult);
         ch_Black.Check(address, dexResult);
+        ch_liquid.Check(address, dexResult);
 
     }
     catch (Exception ex)

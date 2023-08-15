@@ -23,6 +23,7 @@ namespace TelegramBot.Settings
         public Config Red { get; set; }
         public Config Yellow { get; set; }
         public Config Black { get; set; }
+        public Config Liquid { get; set; }
     }
 
     public class Config

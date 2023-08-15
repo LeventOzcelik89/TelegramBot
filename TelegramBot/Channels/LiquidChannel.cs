@@ -8,13 +8,9 @@ using WTelegram;
 
 namespace TelegramBot.Channels
 {
-    public class BlueChannel : ChannelBase
+    public class LiquidChannel : ChannelBase
     {
-        
-        public BlueChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config)
-        {
-            
-        }
+        public LiquidChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config) { }
 
         public override async void Check(string address, DexAnalyzerResult result)
         {
@@ -40,15 +36,16 @@ namespace TelegramBot.Channels
                 (config.mcapDollar.min == null || result._checkResult.mcap >= config.mcapDollar.min) &&
                 (config.mcapDollar.max == null || result._checkResult.mcap <= config.mcapDollar.max) &&
 
-                result.warnings.red == 0 &&
-                result.warnings.yellow == 0 &&
-                result.warnings.orange == 0)
+                result.warnings.red == 0)
 
             {
 
-                PinkChannel.PinkBlackLog.AppendLine(address);
+                if (PinkChannel.PinkBlackLog.content.Any(a => a.token == address))
+                {
+                    await client.SendMessageAsync(this.TGChannel, address);
+                }
 
-                await client.SendMessageAsync(this.TGChannel, address);
+                //  BlueLog.AppendLine(address);
 
             }
 
