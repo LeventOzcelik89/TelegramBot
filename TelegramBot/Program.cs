@@ -89,26 +89,85 @@ async Task Client_UpDate(IObject arg)
         }
 
         var items = arg as TL.Updates;
-        var item = items.chats.Where(a => a.Key == 1675723936).FirstOrDefault();
-        if (item.Key == 0)
-        {
-            return;
-        }
 
         if (!items.UpdateList.FirstOrDefault().GetType().IsAssignableFrom(typeof(UpdateNewChannelMessage)))
         {
             return;
         }
 
+        var item = items.chats.Where(a => a.Key == 1675723936).FirstOrDefault();
+        if (item.Key == 0)
+        {
+            //  		Key	1662862406	long
+            //          VIP BSC LIQUDITY
+            item = items.chats.Where(a => a.Key == 1662862406).FirstOrDefault();
+            if (item.Key == 0)
+            {
+                return;
+            }
+        }
+
         var mm = (items.UpdateList.FirstOrDefault() as UpdateNewChannelMessage).message.ToString();
 
-        var rgx = new Regex("Token: (.*)");
-        var tknMatch = rgx.Matches(mm);
+        Regex rgx;
+        string address;
+        MatchCollection tknMatch;
+
+        if (item.Key == 1662862406)
+        {
+            rgx = new Regex("BINANCE: (.*)");
+            tknMatch = rgx.Matches(mm);
+            if (tknMatch.Count == 0)
+            {
+                return;
+            }
+
+            address = tknMatch.FirstOrDefault().Value.Replace("BINANCE: ", "").Trim();
+
+            var liquidRgx = new Regex("Liquidity: (.*)");
+            var liquidMatch = liquidRgx.Matches(mm);
+            if (liquidMatch.Count == 0)
+            {
+                return;
+            }
+
+            var liquid = Convert.ToDouble(liquidMatch.FirstOrDefault().Value.Replace("Liquidity:", "").Replace("WBNB", "").Replace(",", "").Trim());
+
+            var mCapRgx = new Regex("MCap: (.*) ");
+            var mCapMatch = mCapRgx.Matches(mm);
+            if (mCapMatch.Count == 0)
+            {
+                return;
+            }
+
+            var msg = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).message;
+            var ent = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).entities;
+            var pars = client.EntitiesToHtml(msg.ToString(), ent);
+
+            var mCap = Convert.ToInt32(Convert.ToDouble(mCapMatch.FirstOrDefault().Value.Replace("MCap:", "").Replace("$", "").Replace(",", "").Trim()));
+            ch_liquid.Check(address, new DexAnalyzerResult
+            {
+                _checkResult = new CheckResult
+                {
+                    liquid = liquid * DexAnalyzer.BNBUSD,
+                    mcap = mCap
+                },
+                warnings = new Warnings
+                {
+                    red = pars.IndexOf("🔴") > -1 ? 1 : 0
+                }
+            });
+
+            return;
+
+        }
+
+        rgx = new Regex("Token: (.*)");
+        tknMatch = rgx.Matches(mm);
         if (tknMatch.Count == 0)
         {
             return;
         }
-
 
         if (mm.IndexOf("Chain: ETH") > -1)
         {
@@ -120,7 +179,7 @@ async Task Client_UpDate(IObject arg)
             return;
         }
 
-        var address = tknMatch.FirstOrDefault().Value.Replace("Token: ", "");
+        address = tknMatch.FirstOrDefault().Value.Replace("Token: ", "").Trim();
         var dexResult = new DexAnalyzer().Check(address);
 
         if (dexResult == null)
@@ -135,7 +194,6 @@ async Task Client_UpDate(IObject arg)
         //  ch_Blue.Check(address, dexResult);
         ch_Yellow.Check(address, dexResult);
         ch_Black.Check(address, dexResult);
-        ch_liquid.Check(address, dexResult);
 
     }
     catch (Exception ex)

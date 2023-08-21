@@ -13,7 +13,7 @@ namespace TelegramBot
     public class DexAnalyzer
     {
 
-        static double? BNBUSD { get; set; }
+        public static double? BNBUSD { get; set; }
 
         static HttpClient cli = new HttpClient();
 
