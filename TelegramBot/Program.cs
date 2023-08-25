@@ -72,9 +72,9 @@ var ch_Black = new BlackChannel(client, "Ch_Black.txt", GetChannel(dials, "BLACK
 
 var ch_liquid = new LiquidChannel(client, "VIP BSC LIQUDITY", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 
-//var adr = "0x1ef6e1773c5aaad37642ba1658e9218571c518cb";
-//var dexResult = new DexAnalyzer().Check(adr);
-//ch_Pink.Check(adr, dexResult);
+var adr = "0x172808443342708686Ad7dCaAc5BB247081F9C6C";
+
+ch_liquid.Check(adr, new DexAnalyzerResult { _checkResult = new CheckResult { liquid = 223.201, mcap = 291 }, warnings = new Warnings { red = 0 } });
 
 
 client.OnUpdate += Client_UpDate;

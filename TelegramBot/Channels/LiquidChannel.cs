@@ -40,7 +40,7 @@ namespace TelegramBot.Channels
 
             {
 
-                if (PinkChannel.PinkBlackLog.content.Any(a => a.token == address))
+                if (PinkChannel.PinkBlackLog.content.Any(a => a.token.ToLower() == address.ToLower()))
                 {
                     await client.SendMessageAsync(this.TGChannel, address);
                 }
