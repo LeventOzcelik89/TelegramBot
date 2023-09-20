@@ -42,7 +42,12 @@ namespace TelegramBot.Channels
 
                 if (PinkChannel.PinkBlackLog.content.Any(a => a.token.ToLower() == address.ToLower()))
                 {
-                    await client.SendMessageAsync(this.TGChannel, address);
+                    var message = await client.SendMessageAsync(this.TGChannel, address);
+                    var dexxanaly = new DexAnalyzer().Check(address);
+                    if (!dexxanaly.options.Contains("HP RISK"))
+                    {
+                        client.Messages_UpdatePinnedMessage(this.TGChannel, message.id);
+                    }
                 }
 
                 //  BlueLog.AppendLine(address);
