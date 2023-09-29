@@ -30,6 +30,8 @@ namespace TelegramBot.Channels
             if (
                 result.warnings.red == 0 &&
                 (result.warnings.yellow > 0 || result.warnings.orange > 0) &&
+                (config.ageSeconds.min == null || result._checkResult.age >= config.ageSeconds.min) &&
+                (config.ageSeconds.max == null || result._checkResult.age <= config.ageSeconds.max) &&
                 ((config.unverified == null || result._checkResult.Unverified == config.unverified) || ((config.unverified == false || config.unverified == null))) &&
                 (config.liquidDollar.min == null || result._checkResult.liquid >= config.liquidDollar.min) &&
                 (config.liquidDollar.max == null || result._checkResult.liquid <= config.liquidDollar.max))

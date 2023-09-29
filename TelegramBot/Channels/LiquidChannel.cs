@@ -40,9 +40,10 @@ namespace TelegramBot.Channels
 
             {
 
-                if (PinkChannel.PinkBlackLog.content.Any(a => a.token.ToLower() == address.ToLower()))
+                var log = PinkChannel.PinkBlackLog.content.FirstOrDefault(a => a.token.ToLower() == address.ToLower());
+                if (log != null)
                 {
-                    var message = await client.SendMessageAsync(this.TGChannel, address);
+                    var message = await client.SendMessageAsync(this.TGChannel, address + System.Environment.NewLine + log.age + Environment.NewLine + log.from);
                     var dexxanaly = new DexAnalyzer().Check(address);
                     if (!dexxanaly.options.Contains("HP RISK"))
                     {

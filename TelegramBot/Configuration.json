@@ -2,7 +2,7 @@
   "Blue": {
     "unverified": null,
     "liquidDollar": {
-      "min": 240,
+      "min": 200,
       "max": null
     },
     "mcapDollar": {
@@ -13,7 +13,7 @@
   "Green": {
     "unverified": null,
     "liquidDollar": {
-      "min": 430,
+      "min": 100,
       "max": null
     }
   },
@@ -38,7 +38,10 @@
       "min": null,
       "max": 1
     },
-    "ageSeconds": 600
+    "ageSeconds": {
+      "min": 120,
+      "max": 600
+    }
   },
   "Red": {
     "unverified": false,
@@ -54,7 +57,7 @@
   "Yellow": {
     "unverified": null,
     "liquidDollar": {
-      "min": 430,
+      "min": 100,
       "max": null
     },
     "mcapDollar": {
@@ -63,6 +66,9 @@
     }
   },
   "Black": {
-    "ageSeconds": 600
+    "ageSeconds": {
+      "min": 120,
+      "max": 600
+    }
   }
 }

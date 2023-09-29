@@ -31,7 +31,8 @@ namespace TelegramBot.Settings
         public bool? unverified { get; set; }
         public MinMax liquidDollar { get; set; }
         public MinMax mcapDollar { get; set; }
-        public int? ageSeconds { get; set; }
+        public MinMax ageSeconds { get; set; }
+//          public int? ageSeconds { get; set; }
     }
 
 

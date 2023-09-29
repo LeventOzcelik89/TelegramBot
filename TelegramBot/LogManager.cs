@@ -20,6 +20,22 @@ namespace TelegramBot
             this.token = token;
         }
 
+        public LogRow(DateTime date, string token, string age, string from)
+        {
+            this.date = date;
+            this.token = token;
+            this.from = from;
+            this.age = age;
+        }
+
+        public LogRow(string token, string age, string from)
+        {
+            this.date = DateTime.Now;
+            this.token = token;
+            this.from = from;
+            this.age = age;
+        }
+
         public LogRow(DateTime date, string token)
         {
             this.date = DateTime.Now;
@@ -28,6 +44,8 @@ namespace TelegramBot
 
         public DateTime date { get; set; }
         public string token { get; set; }
+        public string age { get; set; }
+        public string from { get; set; }
     }
 
     public abstract class LogManagerBase
@@ -63,6 +81,23 @@ namespace TelegramBot
 
             }
         }
+
+        public void AppendLine(string token, string age, string from)
+        {
+
+            try
+            {
+                var lr = new LogRow(DateTime.Now, token, age, from);
+                this.content.Add(lr);
+                File.AppendAllText(this.dir, Newtonsoft.Json.JsonConvert.SerializeObject(lr) + Environment.NewLine);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
 
     }
 
