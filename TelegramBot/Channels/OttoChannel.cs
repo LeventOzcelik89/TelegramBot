@@ -8,17 +8,17 @@ using WTelegram;
 
 namespace TelegramBot.Channels
 {
-    public class BlueNewChannel : ChannelBase
+    public class OttoChannel : ChannelBase
     {
-        public BlueNewChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config) { }
+
+        public static ChannelBase Base_Channel { get; set; }
+
+        public OttoChannel(Client client, string logFile, ChatBase tgChannel, Settings.Config config) : base(client, logFile, tgChannel, config) { }
 
         public override async void Check(string address, DexAnalyzerResult result)
         {
             base.Check(address, result);
             if (result == null) { return; }
-
-            //var msgs = await client.Messages_GetHistory(OttoChannel.Base_Channel.TGChannel) ;
-            ////  await client.SendMessageAsync(OttoChannel.Base_Channel.TGChannel, )
 
             if (this.LogManager.content.Any(a => a.token == address))
             {
@@ -63,5 +63,12 @@ namespace TelegramBot.Channels
             }
 
         }
+
+        public override void init()
+        {
+            Base_Channel = this;
+            base.init();
+        }
+
     }
 }

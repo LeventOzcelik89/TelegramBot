@@ -26,11 +26,20 @@ namespace TelegramBot.Channels
             this.LogManager = new LogManager(logFile);
             this.CheckList = new CheckList("checklist_" + logFile);
             this.config = config;
+            
+            this.init();
         }
 
         public virtual void Check(string address, DexAnalyzerResult result)
         {
             this.CheckList.AppendLine(address + " - " + Newtonsoft.Json.JsonConvert.SerializeObject(result));
+        }
+
+        public virtual void init()
+        {
+
+
+
         }
 
     }

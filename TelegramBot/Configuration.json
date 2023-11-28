@@ -15,6 +15,10 @@
     "liquidDollar": {
       "min": 100,
       "max": null
+    },
+    "ageSeconds": {
+      "min": 120,
+      "max": 600
     }
   },
   "Gray": {
@@ -52,6 +56,10 @@
     "mcapDollar": {
       "min": null,
       "max": null
+    },
+    "ageSeconds": {
+      "min": 120,
+      "max": 600
     }
   },
   "Yellow": {
@@ -63,6 +71,10 @@
     "mcapDollar": {
       "min": null,
       "max": null
+    },
+    "ageSeconds": {
+      "min": 120,
+      "max": 600
     }
   },
   "Black": {

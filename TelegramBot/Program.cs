@@ -69,12 +69,28 @@ var ch_Yellow = new YellowChannel(client, "Ch_Yellow.txt", GetChannel(dials, "YE
 //  var ch_Blue = new BlueChannel(client, "Ch_Blue.txt", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 var ch_Pink = new PinkChannel(client, "Ch_Pink.txt", GetChannel(dials, "PINK-CHANNEL"), settings.Pink);
 var ch_Black = new BlackChannel(client, "Ch_Black.txt", GetChannel(dials, "BLACK-CHANNEL"), settings.Black);
+//  var ch_Otto = new OttoChannel(client, "Ch_Otto.txt", GetChannel(dials, "Otto BSC Deployments"), settings.Otto);
+var ch_blueNew = new BlueNewChannel(client, "VIP BSC LIQUDITY", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 
-var ch_liquid = new LiquidChannel(client, "VIP BSC LIQUDITY", GetChannel(dials, "BLUE-CHANNEL"), settings.Blue);
 
-var adr = "0x172808443342708686Ad7dCaAc5BB247081F9C6C";
 
-ch_liquid.Check(adr, new DexAnalyzerResult { _checkResult = new CheckResult { liquid = 223.201, mcap = 291 }, warnings = new Warnings { red = 0 } });
+//var adr = "0x8033064Fe1df862271d4546c281AfB581ee25C4A";
+//ch_blueNew.Check(adr, new DexAnalyzerResult { _checkResult = new CheckResult { liquid = 223.201, mcap = 291 }, warnings = new Warnings { red = 0 } });
+
+
+//for (int offset = 0; ;)
+//{
+//    var messagesBase = await client.Messages_GetHistory(OttoChannel.Base_Channel.TGChannel, 0, default, offset, 1000, 0, 0, 0);
+//    if (messagesBase is not Messages_ChannelMessages channelMessages) break;
+//    //  foreach (var msgBase in channelMessages.messages)
+//    //      if (msgBase is Message msg)
+//    //      {
+//    //          // process the message
+//    //      }
+//    offset += channelMessages.messages.Length;
+//    if (offset >= 10000) break;
+//}
+
 
 
 client.OnUpdate += Client_UpDate;
@@ -122,7 +138,7 @@ async Task Client_UpDate(IObject arg)
                 return;
             }
 
-            address = tknMatch.FirstOrDefault().Value.Replace("BINANCE: ", "").Trim();
+            //  address = tknMatch.FirstOrDefault().Value.Replace("BINANCE: ", "").Trim();
 
             var liquidRgx = new Regex("Liquidity: (.*)");
             var liquidMatch = liquidRgx.Matches(mm);
@@ -144,8 +160,19 @@ async Task Client_UpDate(IObject arg)
             var ent = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).entities;
             var pars = client.EntitiesToHtml(msg.ToString(), ent);
 
+            var reveralRegex = new Regex("\"https:\\/\\/t\\.me\\/wagiebot\\?start=safebot(.*)\"");
+            var reveralRegexResult = reveralRegex.Matches(pars);
+            if (reveralRegexResult.Count() == 0)
+            {
+                reveralRegexResult = new Regex("href=\"https://bscscan.com/address/(.*)\">").Matches(pars);
+            }
+            var tokenAddress = reveralRegexResult[0].Value.Replace("\"https://t.me/wagiebot?start=safebot", "")
+                .Replace("href=\"https://bscscan.com/address/", "")
+                .Replace("\">", "")
+                .Replace("\"", "");
+
             var mCap = Convert.ToInt32(Convert.ToDouble(mCapMatch.FirstOrDefault().Value.Replace("MCap:", "").Replace("$", "").Replace(",", "").Trim()));
-            ch_liquid.Check(address, new DexAnalyzerResult
+            ch_blueNew.Check(tokenAddress, new DexAnalyzerResult
             {
                 _checkResult = new CheckResult
                 {
