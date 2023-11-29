@@ -164,10 +164,13 @@ async Task Client_UpDate(IObject arg)
             var reveralRegexResult = reveralRegex.Matches(pars);
             if (reveralRegexResult.Count() == 0)
             {
-                reveralRegexResult = new Regex("href=\"https://bscscan.com/address/(.*)\">").Matches(pars);
+                reveralRegexResult = new Regex("start=iBEhhEXl_snipe_(.*)\"").Matches(pars);
             }
-            var tokenAddress = reveralRegexResult[0].Value.Replace("\"https://t.me/wagiebot?start=safebot", "")
+            var tokenAddress = reveralRegexResult[0].Value
+                .Replace("\"https://t.me/wagiebot?start=safebot", "")
                 .Replace("href=\"https://bscscan.com/address/", "")
+                .Replace("start=", "")
+                .Replace("iBEhhEXl_snipe_", "")
                 .Replace("\">", "")
                 .Replace("\"", "");
 
