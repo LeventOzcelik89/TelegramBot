@@ -97,6 +97,9 @@ client.OnUpdate += Client_UpDate;
 
 async Task Client_UpDate(IObject arg)
 {
+
+    var parsed = "NOT PARSED";
+
     try
     {
         if (!arg.GetType().IsAssignableFrom(typeof(TL.Updates)))
@@ -158,16 +161,19 @@ async Task Client_UpDate(IObject arg)
 
             var msg = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).message;
             var ent = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).entities;
-            var pars = client.EntitiesToHtml(msg.ToString(), ent);
+            parsed = client.EntitiesToHtml(msg.ToString(), ent);
 
             var reveralRegex = new Regex("\"https:\\/\\/t\\.me\\/wagiebot\\?start=safebot(.*)\"");
-            var reveralRegexResult = reveralRegex.Matches(pars);
+            var reveralRegexResult = reveralRegex.Matches(parsed);
             if (reveralRegexResult.Count() == 0)
             {
-                reveralRegexResult = new Regex("href=\"https://bscscan.com/address/(.*)\">").Matches(pars);
+                reveralRegexResult = new Regex("start=iBEhhEXl_snipe_(.*)\"").Matches(parsed);
             }
-            var tokenAddress = reveralRegexResult[0].Value.Replace("\"https://t.me/wagiebot?start=safebot", "")
+            var tokenAddress = reveralRegexResult[0].Value
+                .Replace("\"https://t.me/wagiebot?start=safebot", "")
                 .Replace("href=\"https://bscscan.com/address/", "")
+                .Replace("start=", "")
+                .Replace("iBEhhEXl_snipe_", "")
                 .Replace("\">", "")
                 .Replace("\"", "");
 
@@ -181,7 +187,7 @@ async Task Client_UpDate(IObject arg)
                 },
                 warnings = new Warnings
                 {
-                    red = pars.IndexOf("🔴") > -1 ? 1 : 0
+                    red = parsed.IndexOf("🔴") > -1 ? 1 : 0
                 }
             });
 
@@ -225,7 +231,7 @@ async Task Client_UpDate(IObject arg)
     }
     catch (Exception ex)
     {
-        log.AppendLine(ex.Message.ToString() + System.Environment.NewLine + ex.StackTrace);
+        log.AppendLine(ex.Message.ToString() + parsed + System.Environment.NewLine + ex.StackTrace);
         Console.WriteLine(ex.Message);
         throw;
     }
