@@ -74,8 +74,8 @@ var ch_blueNew = new BlueNewChannel(client, "VIP BSC LIQUDITY", GetChannel(dials
 
 
 
-//var adr = "0x8033064Fe1df862271d4546c281AfB581ee25C4A";
-//ch_blueNew.Check(adr, new DexAnalyzerResult { _checkResult = new CheckResult { liquid = 223.201, mcap = 291 }, warnings = new Warnings { red = 0 } });
+var adr = "0x7c597cB25EEd33898bbaa57FF520d3E582661869";
+ch_blueNew.Check(adr, new DexAnalyzerResult { _checkResult = new CheckResult { liquid = 223.201, mcap = 291 }, warnings = new Warnings { red = 0 } });
 
 
 //for (int offset = 0; ;)
@@ -141,7 +141,7 @@ async Task Client_UpDate(IObject arg)
                 return;
             }
 
-            //  address = tknMatch.FirstOrDefault().Value.Replace("BINANCE: ", "").Trim();
+            address = tknMatch.FirstOrDefault().Value.Replace("BINANCE: ", "").Trim();
 
             var liquidRgx = new Regex("Liquidity: (.*)");
             var liquidMatch = liquidRgx.Matches(mm);
@@ -163,22 +163,22 @@ async Task Client_UpDate(IObject arg)
             var ent = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).entities;
             parsed = client.EntitiesToHtml(msg.ToString(), ent);
 
-            var reveralRegex = new Regex("\"https:\\/\\/t\\.me\\/wagiebot\\?start=safebot(.*)\"");
-            var reveralRegexResult = reveralRegex.Matches(parsed);
-            if (reveralRegexResult.Count() == 0)
-            {
-                reveralRegexResult = new Regex("start=iBEhhEXl_snipe_(.*)\"").Matches(parsed);
-            }
-            var tokenAddress = reveralRegexResult[0].Value
-                .Replace("\"https://t.me/wagiebot?start=safebot", "")
-                .Replace("href=\"https://bscscan.com/address/", "")
-                .Replace("start=", "")
-                .Replace("iBEhhEXl_snipe_", "")
-                .Replace("\">", "")
-                .Replace("\"", "");
+            //var reveralRegex = new Regex("\"https:\\/\\/t\\.me\\/wagiebot\\?start=safebot(.*)\"");
+            //var reveralRegexResult = reveralRegex.Matches(parsed);
+            //if (reveralRegexResult.Count() == 0)
+            //{
+            //    reveralRegexResult = new Regex("start=iBEhhEXl_snipe_(.*)\"").Matches(parsed);
+            //}
+            //var tokenAddress = reveralRegexResult[0].Value
+            //    .Replace("\"https://t.me/wagiebot?start=safebot", "")
+            //    .Replace("href=\"https://bscscan.com/address/", "")
+            //    .Replace("start=", "")
+            //    .Replace("iBEhhEXl_snipe_", "")
+            //    .Replace("\">", "")
+            //    .Replace("\"", "");
 
             var mCap = Convert.ToInt32(Convert.ToDouble(mCapMatch.FirstOrDefault().Value.Replace("MCap:", "").Replace("$", "").Replace(",", "").Trim()));
-            ch_blueNew.Check(tokenAddress, new DexAnalyzerResult
+            ch_blueNew.Check(address, new DexAnalyzerResult
             {
                 _checkResult = new CheckResult
                 {

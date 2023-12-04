@@ -38,7 +38,8 @@ namespace TelegramBot.Channels
                 )       //  NaN
             {
 
-                PinkChannel.PinkBlackLog.AppendLine(address, result._checkResult.age + " sn", this.TGChannel.Title);
+                //PinkChannel.PinkBlackLog.AppendLine(address, result._checkResult.age + " sn", this.TGChannel.Title);
+                PinkChannel.PinkBlackLog.AppendLine(address);
 
                 await client.SendMessageAsync(this.TGChannel, address);
 

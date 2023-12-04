@@ -50,7 +50,7 @@ namespace TelegramBot.Channels
                 var log = PinkChannel.PinkBlackLog.content.FirstOrDefault(a => a.token.ToLower() == address.ToLower());
                 if (log != null)
                 {
-                    var message = await client.SendMessageAsync(this.TGChannel, $"{address} / {log.from} / AGE {log.age}");
+                    var message = await client.SendMessageAsync(this.TGChannel, address);
                     //  var dexxanaly = new DexAnalyzer().Check(address);
                     //  if (!dexxanaly.options.Contains("HP RISK"))
                     //  {

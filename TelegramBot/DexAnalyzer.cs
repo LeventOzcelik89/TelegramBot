@@ -35,13 +35,15 @@ namespace TelegramBot
                 var _liq = Convert.ToDouble(json.liquidparite.Replace("WBNB", "").Replace("BNB", "").Trim());
                 var _mcap = Int32.TryParse(json.marketcap, out _) ? Convert.ToInt32(json.marketcap) : -999;
                 var _unv = json.options.Contains("UNVERIFIED CONTACT");
+                var _initialLP = Convert.ToDouble(json.initiallp.Replace("WBNB", "").Replace("BNB", "").Trim());
 
                 json._checkResult = new CheckResult
                 {
                     liquid = _liq * DexAnalyzer.BNBUSD,
                     mcap = _mcap,
                     Unverified = _unv,
-                    age = CalculateTimeSpan(json.age)
+                    age = CalculateTimeSpan(json.age),
+                    initiallp = _initialLP * DexAnalyzer.BNBUSD
                 };
 
                 return json;
@@ -117,6 +119,7 @@ namespace TelegramBot
         public int? mcap { get; set; }
         public bool? Unverified { get; set; }
         public int age { get; set; }
+        public double? initiallp { get; set; }
 
     }
 

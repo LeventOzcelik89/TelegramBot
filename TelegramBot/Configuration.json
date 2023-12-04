@@ -2,10 +2,14 @@
   "Blue": {
     "unverified": null,
     "liquidDollar": {
-      "min": 200,
+      "min": 450,
       "max": null
     },
     "mcapDollar": {
+      "min": null,
+      "max": null
+    },
+    "ageSeconds": {
       "min": null,
       "max": null
     }
@@ -13,22 +17,15 @@
   "Green": {
     "unverified": null,
     "liquidDollar": {
-      "min": 100,
+      "min": 450,
+      "max": null
+    },
+    "initialLP": {
+      "min": null,
       "max": null
     },
     "ageSeconds": {
-      "min": 120,
-      "max": 600
-    }
-  },
-  "Gray": {
-    "unverified": true,
-    "liquidDollar": {
-      "min": 300,
-      "max": null
-    },
-    "mcapDollar": {
-      "min": 300,
+      "min": null,
       "max": null
     }
   },
@@ -43,27 +40,12 @@
       "max": 1
     },
     "ageSeconds": {
-      "min": 120,
-      "max": 600
+      "min": null,
+      "max": null
     }
   },
   "Red": {
-    "unverified": false,
-    "liquidDollar": {
-      "min": 400,
-      "max": null
-    },
-    "mcapDollar": {
-      "min": null,
-      "max": null
-    },
-    "ageSeconds": {
-      "min": 120,
-      "max": 600
-    }
-  },
-  "Yellow": {
-    "unverified": null,
+    "unverified": true,
     "liquidDollar": {
       "min": 100,
       "max": null
@@ -73,14 +55,33 @@
       "max": null
     },
     "ageSeconds": {
-      "min": 120,
-      "max": 600
+      "min": null,
+      "max": null
+    }
+  },
+  "Yellow": {
+    "unverified": null,
+    "liquidDollar": {
+      "min": 450,
+      "max": null
+    },
+    "mcapDollar": {
+      "min": null,
+      "max": null
+    },
+    "initialLP": {
+      "min": null,
+      "max": null
+    },
+    "ageSeconds": {
+      "min": null,
+      "max": null
     }
   },
   "Black": {
     "ageSeconds": {
-      "min": 120,
-      "max": 600
+      "min": null,
+      "max": null
     }
   }
 }

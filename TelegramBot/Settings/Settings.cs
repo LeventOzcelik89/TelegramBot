@@ -24,7 +24,7 @@ namespace TelegramBot.Settings
         public Config Yellow { get; set; }
         public Config Black { get; set; }
         public Config Liquid { get; set; }
-        public Config Otto { get; set; }
+        //public Config Otto { get; set; }
     }
 
     public class Config
@@ -33,7 +33,8 @@ namespace TelegramBot.Settings
         public MinMax liquidDollar { get; set; }
         public MinMax mcapDollar { get; set; }
         public MinMax ageSeconds { get; set; }
-//          public int? ageSeconds { get; set; }
+        public MinMax initialLP { get; set; }
+        //public int? ageSeconds { get; set; }
     }
 
 
