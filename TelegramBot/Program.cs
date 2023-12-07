@@ -21,6 +21,7 @@ var settings = Newtonsoft.Json.JsonConvert.DeserializeObject<TelegramBot.Setting
 var log = new LogManager("Errors.txt");
 
 new DexAnalyzer().InitBNBUSD();
+//  new DexAnalyzer().Check("0xa0d8df8e723e1476f872c02b10d843b9a9e153e9");
 
 static string Config(string what)
 {
@@ -99,6 +100,7 @@ async Task Client_UpDate(IObject arg)
 {
 
     var parsed = "NOT PARSED";
+    var dbgLine = "0";
 
     try
     {
@@ -128,12 +130,16 @@ async Task Client_UpDate(IObject arg)
 
         var mm = (items.UpdateList.FirstOrDefault() as UpdateNewChannelMessage).message.ToString();
 
+        dbgLine = "message : " + mm;
+
         Regex rgx;
         string address;
         MatchCollection tknMatch;
 
         if (item.Key == 1662862406)
         {
+            dbgLine += System.Environment.NewLine + "item.Key == 1662862406";
+
             rgx = new Regex("BINANCE: (.*)");
             tknMatch = rgx.Matches(mm);
             if (tknMatch.Count == 0)
@@ -142,6 +148,7 @@ async Task Client_UpDate(IObject arg)
             }
 
             address = tknMatch.FirstOrDefault().Value.Replace("BINANCE: ", "").Trim();
+            dbgLine += System.Environment.NewLine + "address : " + address;
 
             var liquidRgx = new Regex("Liquidity: (.*)");
             var liquidMatch = liquidRgx.Matches(mm);
@@ -150,6 +157,7 @@ async Task Client_UpDate(IObject arg)
                 return;
             }
 
+            dbgLine += System.Environment.NewLine + "liquidMatch : " + liquidMatch.FirstOrDefault().Value;
             var liquid = Convert.ToDouble(liquidMatch.FirstOrDefault().Value.Replace("Liquidity:", "").Replace("WBNB", "").Replace(",", "").Trim());
 
             var mCapRgx = new Regex("MCap: (.*) ");
@@ -159,9 +167,13 @@ async Task Client_UpDate(IObject arg)
                 return;
             }
 
+            dbgLine += System.Environment.NewLine + "mCapMatch : " + mCapMatch.FirstOrDefault().Value;
+
             var msg = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).message;
             var ent = ((TL.Message)((TL.UpdateNewMessage)items.UpdateList.FirstOrDefault()).message).entities;
             parsed = client.EntitiesToHtml(msg.ToString(), ent);
+
+            dbgLine += System.Environment.NewLine + "parsed : " + parsed;
 
             //var reveralRegex = new Regex("\"https:\\/\\/t\\.me\\/wagiebot\\?start=safebot(.*)\"");
             //var reveralRegexResult = reveralRegex.Matches(parsed);
@@ -195,6 +207,7 @@ async Task Client_UpDate(IObject arg)
 
         }
 
+
         rgx = new Regex("Token: (.*)");
         tknMatch = rgx.Matches(mm);
         if (tknMatch.Count == 0)
@@ -211,6 +224,8 @@ async Task Client_UpDate(IObject arg)
         {
             return;
         }
+
+        dbgLine += System.Environment.NewLine + "address : " + tknMatch.FirstOrDefault().Value;
 
         address = tknMatch.FirstOrDefault().Value.Replace("Token: ", "").Trim();
         var dexResult = new DexAnalyzer().Check(address);
@@ -232,6 +247,7 @@ async Task Client_UpDate(IObject arg)
     catch (Exception ex)
     {
         log.AppendLine(ex.Message.ToString() + parsed + System.Environment.NewLine + ex.StackTrace);
+        log.AppendLine("dbgLine : " + dbgLine);
         Console.WriteLine(ex.Message);
         throw;
     }

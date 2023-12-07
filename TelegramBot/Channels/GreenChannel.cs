@@ -35,8 +35,8 @@ namespace TelegramBot.Channels
                 (config.ageSeconds?.max == null || result._checkResult.age <= config.ageSeconds.max) &&
                 (config.liquidDollar.min == null || result._checkResult.liquid >= config.liquidDollar.min) &&
                 (config.liquidDollar.max == null || result._checkResult.liquid <= config.liquidDollar.max) &&
-                (config.initialLP?.min == null || result._checkResult.initiallp >= config.initialLP.min) &&
-                (config.initialLP?.max == null || result._checkResult.initiallp <= config.initialLP.max)
+                (config.initialLP?.min == null || result._checkResult.initiallp == null || result._checkResult.initiallp >= config.initialLP.min) &&
+                (config.initialLP?.max == null || result._checkResult.initiallp == null || result._checkResult.initiallp <= config.initialLP.max)
                 )
             {
 

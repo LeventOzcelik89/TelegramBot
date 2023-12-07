@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using TL;
 using TL.Methods;
 
 namespace TelegramBot
@@ -17,25 +19,38 @@ namespace TelegramBot
 
         static HttpClient cli = new HttpClient();
 
-        public DexAnalyzerResult Check(string token)
+        static LogManager dexLog = new LogManager("DexAnalyzer.txt");
+
+        public DexAnalyzerResult? Check(string token)
         {
+
+            var dbgLog = "";
 
             try
             {
+                var url = $"https://api.dexanalyzer.io/full/bsc/{token}?apikey=a3c28e4485ca47a8b8d33c73059";
+                dbgLog = "url : " + url;
 
-                var rs = cli.GetAsync($"https://api.dexanalyzer.io/full/bsc/{token}?apikey=a3c28e4485ca47a8b8d33c73059");
+                var rs = cli.GetAsync(url);
 
                 var rsr = rs.Result.Content.ReadAsStringAsync().Result.ToString();
+
+                dbgLog += "  |||  result : " + rsr;
 
                 rsr = rsr.Replace("\\\"", "\"");
                 rsr = rsr.Substring(1, rsr.Length - 2);
 
-                var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DexAnalyzerResult>(rsr);
+                var json = JsonConvert.DeserializeObject<DexAnalyzerResult>(rsr);
 
                 var _liq = Convert.ToDouble(json.liquidparite.Replace("WBNB", "").Replace("BNB", "").Trim());
                 var _mcap = Int32.TryParse(json.marketcap, out _) ? Convert.ToInt32(json.marketcap) : -999;
                 var _unv = json.options.Contains("UNVERIFIED CONTACT");
-                var _initialLP = Convert.ToDouble(json.initiallp.Replace("WBNB", "").Replace("BNB", "").Trim());
+
+                var _initialLP = 0.0;
+                if (json.initiallp != null)
+                {
+                    _initialLP = Convert.ToDouble(json.initiallp.Replace("WBNB", "").Replace("BNB", "").Trim());
+                }
 
                 json._checkResult = new CheckResult
                 {
@@ -46,11 +61,15 @@ namespace TelegramBot
                     initiallp = _initialLP * DexAnalyzer.BNBUSD
                 };
 
+                dexLog.AppendLine(dbgLog);
+
                 return json;
 
             }
             catch (Exception ex)
             {
+                dbgLog += "  |||  ex : " + ex.Message.ToString() + "  |||  " + ex.StackTrace.ToString();
+                dexLog.AppendLine(dbgLog);
                 return null;
             }
 
